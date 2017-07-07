@@ -1,0 +1,13 @@
+{
+    "sdkVersion": "18.0.0",    
+    "name": "AW app",
+    "icon": "./images/nopic1.png",
+    "version" : "1.0.0",
+    "slug": "aw",
+    "ios" : {
+        "bundleIdentifier": "org.lice.awapp"
+    },
+    "android": {
+        "package": "lice.awapp"
+    }
+}

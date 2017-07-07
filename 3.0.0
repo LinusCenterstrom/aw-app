@@ -1,0 +1,33 @@
+AWApp@0.1.0 D:\Git\AWApp
++-- doctrine@2.0.0  extraneous
++-- eslint-config-standard@10.2.1 
++-- eslint-plugin-import@2.6.0 
+| +-- contains-path@0.1.0 
+| +-- doctrine@1.5.0 
+| | `-- isarray@1.0.0 
+| +-- eslint-import-resolver-node@0.2.3 
+| +-- eslint-module-utils@2.1.1 
+| | `-- pkg-dir@1.0.0 
+| +-- has@1.0.1 
+| +-- lodash.cond@4.5.2 
+| `-- read-pkg-up@2.0.0 
+|   +-- find-up@2.1.0 
+|   `-- read-pkg@2.0.0 
+|     +-- load-json-file@2.0.0 
+|     | `-- strip-bom@3.0.0 
+|     `-- path-type@2.0.0 
++-- eslint-plugin-node@5.1.0 
+| `-- ignore@3.3.3 
++-- eslint-plugin-promise@3.5.0 
++-- eslint-plugin-standard@3.0.1 
++-- eslint-scope@3.7.1  extraneous
++-- esquery@1.0.0  extraneous
++-- file-entry-cache@2.0.0  extraneous
++-- is-my-json-valid@2.16.0  extraneous
++-- is-resolvable@1.0.0  extraneous
++-- pluralize@4.0.0  extraneous
++-- require-uncached@1.0.3  extraneous
++-- strip-json-comments@2.0.1  extraneous
++-- table@4.0.1  extraneous
+`-- text-table@0.2.0  extraneous
+
