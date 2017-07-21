@@ -7,6 +7,9 @@ import ParticipantList from "./participantList";
 import { connect } from "react-redux";
 import { createBooking, cancelParticipant } from "./eventActions";
 import Signup from "./Signup";
+import Accordion from "react-native-collapsible/Accordion";
+import EventComments from "./eventComments";
+
 
 class EventDetails extends Component {
     constructor(props){
@@ -59,12 +62,7 @@ class EventDetails extends Component {
                     {
                         <Signup eventID={EventID} participantsLoading={changePending} participants={Participants} modifyingBooking={changePending || false} />
                     }
-                   
-                   
-                    <View style={{paddingTop: 10}}>
-                        <Text style={{fontSize:24, textDecorationLine:"underline"}}>Deltagare</Text>
-                        <ParticipantList isLoading={participantsLoading} eventID={EventID} Participants={Participants} />
-                    </View>
+                   <EventSections eventID={EventID} participantsLoading={participantsLoading} participants={Participants} />
                 </View>
             </ScrollView>
         );
@@ -80,6 +78,69 @@ EventDetails.propTypes = {
     thisPart: PropTypes.object,
     changePending: PropTypes.bool.isRequired
 };
+
+class EventSections extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    _renderHeader(section) {
+        return (
+        <View style={{paddingTop: 10}}> 
+            <Text style={{fontSize:24, textDecorationLine:"underline"}}>{section.title}</Text>
+        </View>
+        );
+    }
+
+    _renderContent = function(section) {
+        return (
+        <View>
+            {section.content}
+        </View>
+        );
+    }
+
+ 
+    render()
+    {
+        let { participants, eventID, participantsLoading, } = this.props;
+
+
+
+        let sections = [
+            {
+                title: "Deltagare",
+                content: <ParticipantList isLoading={participantsLoading || false} eventID={eventID} Participants={participants} />,
+            },
+            {
+                title: "Kommentarer",
+                content: <EventComments eventID={eventID}  />,
+            }
+        ];
+
+       
+        return(
+            <Accordion
+            sections={sections}
+            renderHeader={this._renderHeader}
+            renderContent={this._renderContent}
+            initiallyActiveSection={0}
+            underlayColor="transparent" 
+            easing="easeOutCubic"
+            duration={400}
+            />
+
+        );
+    }
+}
+
+EventSections.propTypes = {
+    participants: PropTypes.array,
+    eventID: PropTypes.number.isRequired,
+    participantsLoading: PropTypes.bool
+};
+
+
 
 const mapStateToProps = state => {
     const ev = state.eventState.events.find(x => x.EventID === state.eventState.openEvent);

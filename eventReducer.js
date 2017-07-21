@@ -8,7 +8,13 @@ import {
     CREATING_BOOKING,
     BOOKING_CREATED,
     CANCELING_PARTICIPANT,
-    PARTICIPANT_CANCELED
+    PARTICIPANT_CANCELED,
+    EXPAND_COMMENTS,
+    CONTRACT_COMMENTS,
+    EVENT_LOADCOMMENTS,
+    EVENT_COMMENTSLOADED,
+    EVENT_ADDCOMMENT,
+    EVENT_COMMENTADDED
 } from "./eventActions";
 
 const modifyEvent = (evs, eventID, update) => {
@@ -29,7 +35,10 @@ const modifyEvent = (evs, eventID, update) => {
 function eventReducer(state = {
     openEvent: null,
     events: null,
-    eventsLoading: false
+    eventsLoading: false,
+    comments:[],
+    commentsLoading: false,
+    commentsExpanded: false
 }, action){
     switch(action.type) {
         case LOAD_EVENTS: 
@@ -138,6 +147,52 @@ function eventReducer(state = {
                     creatingBooking: false,
                     modifyingBooking: false
                 })
+            };
+        }
+
+        case EXPAND_COMMENTS:{
+            return{
+                ...state,
+                commentsExpanded: true
+            };
+        }
+    
+        case CONTRACT_COMMENTS:{
+            return{
+                ...state,
+                commentsExpanded: false
+            };
+        }
+
+        case EVENT_LOADCOMMENTS:{
+           return {
+                ...state,
+                commentsLoading: true
+            };
+        }
+
+
+        case EVENT_COMMENTSLOADED:{
+            console.log(action);
+             return {
+                ...state,
+                commentsLoading: false,
+                comments: action.comments
+            };
+        }
+
+        case EVENT_ADDCOMMENT:{
+            return{
+                ...state,
+                commentPendingAdd: true
+            };   
+        }
+
+        case EVENT_COMMENTADDED:{
+             console.log(action);
+            return{
+                ...state,
+                commentPendingAdd: false
             };
         }
 

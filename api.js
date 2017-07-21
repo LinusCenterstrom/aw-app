@@ -292,6 +292,30 @@ function CancelParticipant(eventID, contact, comment, opts = {}, participant){
     }
 }
 
+function LoadEventComments(eventIds, success){
+    //TODO
+
+    const comments = [
+             {Id: 8, PersonName: "Linus", Text: "japp", Created: "2017-07-14 16:35" },
+             {Id: 7, PersonName: "Oscar", Text: "aw ikväll?", Created: "2017-07-14 15:13"},
+             {Id: 6, PersonName: "Oscar", Text: "^^", Created: "2017-07-12 05:13" },
+             {Id: 5, PersonName: "Linus", Text: "haha", Created: "2017-07-10 16:13" },
+             {Id: 4, PersonName: "Kevin", Text: "pölse", Created: "2017-07-10 14:13" },
+             {Id: 3, PersonName: "Anders", Text: "Hej", Created: "2017-07-08 12:13" },
+             {Id: 2, PersonName: "Chris", Text: "Hallå", Created: "2017-07-08 09:22" },
+             {Id: 1, PersonName: "Linus", Text: "Tjena", Created: "2017-07-04 07:13" }
+            ];
+
+            success(comments);    
+            
+}
+
+function AddEventComment(eventID, contact, comment, success){
+    //TODO
+   
+    success(eventID, contact, comment);
+}
+
 export {   
-    GetAuthToken, GetEvent, GetContacts, CreateBooking, CancelParticipant, GetParticipants, SetRequestTimeout
+    GetAuthToken, GetEvent, GetContacts, CreateBooking, CancelParticipant, GetParticipants, SetRequestTimeout, LoadEventComments, AddEventComment
 };

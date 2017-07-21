@@ -1,4 +1,4 @@
-import { GetEvent, CreateBooking, CancelParticipant, GetParticipants } from "./api";
+import { GetEvent, CreateBooking, CancelParticipant, GetParticipants, LoadEventComments, AddEventComment } from "./api";
 import { makeActionCreator } from "./actionHelpers";
 
 const LOAD_EVENTS = "LOAD_EVENTS";
@@ -11,6 +11,12 @@ const CREATING_BOOKING = "CREATING_BOOKING";
 const BOOKING_CREATED = "BOOKING_CREATED";
 const CANCELING_PARTICIPANT = "CANCELING_PARTICIPANT";
 const PARTICIPANT_CANCELED = "PARTICIPANT_CANCELED";
+const EXPAND_COMMENTS = "EXPAND_COMMENTS";
+const CONTRACT_COMMENTS = "CONTRACT_COMMENTS";
+const EVENT_LOADCOMMENTS = "EVENT_LOADCOMMENTS";
+const EVENT_COMMENTSLOADED = "EVENT_COMMENTSLOADED"; 
+const EVENT_ADDCOMMENT = "EVENT_ADDCOMMENT";
+const EVENT_COMMENTADDED = "EVENT_COMMENTADDED";
 
 function createBooking(eventID, contact, comment, participant){
     return function(dispatch){
@@ -89,8 +95,46 @@ function loadEvents(skipParticipants = false){
     };
 }
 
+function loadComments(eventID){
+    return function(dispatch){
+        dispatch({
+                    type: EVENT_LOADCOMMENTS
+                });
+
+        setTimeout(function() {
+        LoadEventComments(eventID, function(comments){
+            dispatch({
+                type: EVENT_COMMENTSLOADED,
+                comments
+            });
+        });
+        }, 3000);
+    };
+}
+
+function addEventComment(eventID, contact, comment){
+ return function(dispatch) {
+        dispatch({
+            type: EVENT_ADDCOMMENT
+        });
+        setTimeout(function() {
+        AddEventComment(eventID, contact, comment, function(a,b,c){
+            dispatch({
+                type: EVENT_COMMENTADDED,
+                a,b,c
+            });
+
+            return dispatch(loadComments(eventID));
+        });
+          }, 3000);
+    };
+}
+
 export const showEventDetails = makeActionCreator(SHOW_EVENT_DETAILS, "ev");
 export const hideEventDetails = makeActionCreator(HIDE_EVENT_DETAILS);
+
+export const expandComments = makeActionCreator(EXPAND_COMMENTS);
+export const contractComments = makeActionCreator(CONTRACT_COMMENTS);
 
 export {
     LOAD_EVENTS,
@@ -106,5 +150,13 @@ export {
     loadParticipants,
     loadEvents,
     createBooking,
-    cancelParticipant
+    cancelParticipant,
+    EXPAND_COMMENTS,
+    CONTRACT_COMMENTS,
+    loadComments,
+    EVENT_LOADCOMMENTS,
+    EVENT_COMMENTSLOADED,
+    addEventComment,
+    EVENT_ADDCOMMENT,
+    EVENT_COMMENTADDED
 };
