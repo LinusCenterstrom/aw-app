@@ -1,5 +1,5 @@
 import React from "react";
-import { View, BackHandler } from "react-native";
+import { View, BackHandler, AppState } from "react-native";
 import { applyAsArrayPrototypes } from "csharp-enumeration-functions";
 import moment from "moment-with-locales-es6";
 import { ThemeProvider } from "react-native-material-ui";
@@ -22,6 +22,9 @@ import Navbar from "./Navbar.js";
 import { EVENT_DETAILS, EVENT_LIST, SELECT_CONTACT, GetBackHandler, GetNavigation } from "./navigation";
 import storage from "redux-storage";
 import createEngine from "redux-storage-engine-reactnativeasyncstorage";
+import { setAppStateStatus, startPolling } from "./appActions";
+import appReducer from "./appReducer";
+import BackgroundTimer from "react-native-background-timer";
 
 SetRequestTimeout(3000);
 
@@ -29,7 +32,8 @@ const reducers = storage.reducer(combineReducers(
   {
     eventState: eventReducer,
     contactState: contactReducer,
-    errorState: errorReducer
+    errorState: errorReducer,
+    appState: appReducer
   }
 ));
 
@@ -64,10 +68,43 @@ class App extends React.Component {
   }
 
   componentDidMount(){
+    AppState.addEventListener("change", this._handleAppStateChange);
     this.props.loadEvents();
     this.props.loadContacts();
+    BackgroundTimer.setTimeout(() => {
+      // this will be executed once after 10 seconds
+      // even when app is the the background
+        console.log("tic");
+      }, 1000);
+
   }
 
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (this.props.appStatus.match(/inactive|background/) && nextAppState === "active") {
+      console.log("App has come to the foreground!");
+    } else if (this.props.appStatus.match(/active/) && (nextAppState === "inactive" || nextAppState === "background")) {
+      console.log("App has gone to the background!");
+     
+    }
+    this.props.setAppStatus(nextAppState);
+  }
+
+
+  _startPoll(){
+console.log("_startPoll");
+      let asd = BackgroundTimer.setTimeout(() => {
+      // this will be executed once after 10 seconds
+      // even when app is the the background
+        console.log("tac");
+      }, 10000);
+      
+
+  }
+  
   render() {
     const { selectedContact, selectContact, contacts, contactsLoading, error, activeView, backAction, dispatch, title, onRefresh } = this.props;
 
@@ -107,7 +144,9 @@ const mapStateToProps = state => {
     activeView: nav.currentView,
     backAction: nav.action,
     title: nav.title,
-    onRefresh: nav.onRefresh
+    onRefresh: nav.onRefresh,
+    appStatus: state.appState.status,
+    isPolling: state.appState.isPolling
   };
 };
 
@@ -116,7 +155,9 @@ const mapDispatchToProps = dispatch => (
       loadEvents: () => dispatch(loadEvents()),
       loadContacts: () => dispatch(loadContacts()),
       selectContact: (contact) => dispatch(selectContact(contact)),
-      dispatch: dispatch
+      dispatch: dispatch,
+      setAppStatus: (state) => dispatch(setAppStateStatus(state)),
+      startPolling: () => dispatch(startPolling())
   }
 );
 const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
@@ -135,7 +176,11 @@ App.propTypes = {
   activeView: PropTypes.string,
   backAction: PropTypes.object,
   title: PropTypes.string.isRequired,
-  onRefresh: PropTypes.func
+  onRefresh: PropTypes.func,
+  appStatus: PropTypes.string.isRequired,
+  setAppStatus: PropTypes.func.isRequired,
+  isPolling: PropTypes.bool.isRequired,
+  startPolling: PropTypes.func.isRequired
 };
 
 export default Wrapper;

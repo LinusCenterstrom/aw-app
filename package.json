@@ -26,19 +26,22 @@
     "expo": "^18.0.3",
     "lodash": "^4.17.4",
     "moment-with-locales-es6": "^2.18.1",
+    "prop-types": "15.5.10",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.45.1",
+    "react-native-background-timer": "^1.1.0",
     "react-native-material-ui": "^1.12.0",
-    "recompose": "^0.23.5",
-    "soap-everywhere": "^1.0.7",
-    "redux": "^3.7.1",
     "react-redux": "^5.0.5",
-    "redux-thunk": "^2.2.0",
-    "prop-types": "15.5.10",
+    "recompose": "^0.23.5",
+    "redux": "^3.7.1",
     "redux-storage": "^4.1.2",
-    "redux-storage-engine-reactnativeasyncstorage": "^1.0.5"
+    "redux-storage-engine-reactnativeasyncstorage": "^1.0.5",
+    "redux-thunk": "^2.2.0",
+    "soap-everywhere": "^1.0.7"
   },
   "rnpm": {
-    "assets": ["./fonts"]
+    "assets": [
+      "./fonts"
+    ]
   }
 }
