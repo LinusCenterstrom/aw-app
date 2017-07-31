@@ -56,16 +56,22 @@ class EventComments extends Component{
 
     render()
     {
-        let { comments, commentsLoading, expanded, onExpand, onContract, onCommentSubmit, commentPendingAdd } = this.props;
-        
-        
+        let { comments, commentsLoading, expanded, onExpand, onContract, onCommentSubmit, commentPendingAdd, contact } = this.props;
+        console.log("Contact");
+        console.log(contact);
+        console.log("Contact---");
         let commentView = null;
+        let currentContactComment = "Skriv något...";
 
         if(!commentsLoading){
             commentView = (expanded ? comments : comments.filter((item, i) => { return i <= 3; })).map((post) => 
                     { 
+                        if(post.CustomerContactID === contact.CustomerContactID)
+                        {
+                            currentContactComment = post.Text;
+                        }
                         return (
-                            <View key={post.Id}>
+                            <View key={post.CustomerContactID}>
                                     <View style={{flexDirection:"row", padding:0, paddingTop: 10,justifyContent:"space-between",margin:0}}>
                                         <Text style={styles.titleText}>
                                             {post.PersonName}{"\n"}{"\n"}
@@ -89,7 +95,7 @@ class EventComments extends Component{
             <View>
                 <View style={{paddingTop: 10, paddingBottom:10}}>
                     <TextInput
-                        placeholder="Skriv något..."
+                        placeholder={currentContactComment}
                         onChangeText={(text) => this.setState({text})}
                         multiline={true}
                         numberOfLines={4}
@@ -109,14 +115,15 @@ class EventComments extends Component{
 
 EventComments.propTypes = {
     loadComments: PropTypes.func.isRequired,
-    eventID:PropTypes.number.isRequired,
+    eventID: PropTypes.number.isRequired,
     comments: PropTypes.array,
     commentsLoading: PropTypes.bool.isRequired,
     expanded: PropTypes.bool,
     onExpand: PropTypes.func.isRequired,
     onContract: PropTypes.func.isRequired,
     onCommentSubmit: PropTypes.func.isRequired,
-    commentPendingAdd:PropTypes.bool
+    commentPendingAdd:PropTypes.bool,
+    contact : PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({

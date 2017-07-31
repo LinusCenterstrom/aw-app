@@ -18,7 +18,7 @@ class EventDetails extends Component {
 
     render(){
         let { ImageUrl, Participants, Description, Details, ObjectName, EventID, PeriodStart, PeriodEnd, participantsLoading } = this.props.ev;
-        let { changePending } = this.props;
+        let { changePending, contact } = this.props;
         let source;
 
         if(ImageUrl && typeof(ImageUrl) == "string"){
@@ -62,7 +62,7 @@ class EventDetails extends Component {
                     {
                         <Signup eventID={EventID} participantsLoading={changePending} participants={Participants} modifyingBooking={changePending || false} />
                     }
-                   <EventSections eventID={EventID} participantsLoading={participantsLoading} participants={Participants} />
+                   <EventSections eventID={EventID} participantsLoading={participantsLoading} participants={Participants} contact={contact} />
                 </View>
             </ScrollView>
         );
@@ -103,7 +103,7 @@ class EventSections extends Component {
  
     render()
     {
-        let { participants, eventID, participantsLoading, } = this.props;
+        let { contact, participants, eventID, participantsLoading, } = this.props;
 
 
 
@@ -114,7 +114,7 @@ class EventSections extends Component {
             },
             {
                 title: "Kommentarer",
-                content: <EventComments eventID={eventID}  />,
+                content: <EventComments eventID={eventID} contact={contact}  />,
             }
         ];
 
@@ -135,6 +135,7 @@ class EventSections extends Component {
 }
 
 EventSections.propTypes = {
+    contact : PropTypes.object.isRequired,
     participants: PropTypes.array,
     eventID: PropTypes.number.isRequired,
     participantsLoading: PropTypes.bool
